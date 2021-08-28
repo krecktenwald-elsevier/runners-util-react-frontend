@@ -3,7 +3,7 @@ import '../../App.css';
 import Home from '../home/Home';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import RunList from '../run/RunList';
-import RunEdit from "../run/RunEdit";
+import RunEdit from '../run/RunEdit';
 
 class App extends Component {
   render() {

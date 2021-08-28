@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { Button, ButtonGroup, Container, Table } from 'reactstrap/es/index';
 import AppNavBar from '../app/AppNavBar';
 import { Link } from 'react-router-dom';
-
+import { DateTime } from "luxon";
 
 class RunList extends Component {
-
     constructor(props) {
         super(props);
         this.state = {runs: []};
@@ -40,7 +39,8 @@ class RunList extends Component {
 
         const runList = runs.map(run => {
             return <tr key={run.id}>
-                <td style={{whiteSpace: 'nowrap'}}>{run.date}</td>
+                <td>{DateTime.fromISO(run.dateTime).toFormat('MM/dd/yyyy')}</td>
+                <td>{DateTime.fromISO(run.dateTime).toFormat('hh:mm a')}</td>
                 <td>{run.duration}</td>
                 <td>
                     <ButtonGroup>
@@ -63,6 +63,7 @@ class RunList extends Component {
                         <thead>
                         <tr>
                             <th width="50%">Date</th>
+                            <th width="50%">Time</th>
                             <th width="50%">Duration</th>
                         </tr>
                         </thead>
