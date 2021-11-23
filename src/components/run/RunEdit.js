@@ -1,20 +1,17 @@
-import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { Button, Container, Form, FormGroup, Input, Label, Col, Row } from 'reactstrap/es/index';
+import React, {Component} from 'react';
+import {Link, withRouter} from 'react-router-dom';
+import {Button, Container, Form, FormGroup, Input, Label} from 'reactstrap/es/index';
 import AppNavBar from '../app/AppNavBar';
-import { DateTime } from "luxon";
+import {DateTime} from "luxon";
 
 
 class RunEdit extends Component {
-
     emptyRunEditItem = {
         dateTime: DateTime.now().toString(),
-        duration: '0',
-        durationHours: 0,
-        durationMinutes: 0,
-        durationSeconds: 0,
-        localDateSelection: DateTime.now().toFormat('yyyy-MM-dd'),
-        localTimeSelection: DateTime.now().toFormat('HH:mm')
+        localDate: DateTime.now().toFormat('yyyy-MM-dd'),
+        localTime: DateTime.now().toFormat('HH:mm'),
+        duration: 0,
+        durationFormatted: '00:00:00'
     };
 
     constructor(props) {
@@ -40,12 +37,22 @@ class RunEdit extends Component {
         const value = target.value;
         const name = target.name;
 
-        if(name === 'localDateSelection' || name === 'localTimeSelection'){
+        if(name === 'localDate' || name === 'localTime'){
             let {runEditItem} = this.state;
             runEditItem[name] = value;
 
-            let selectedDateTime = DateTime.fromISO(this.state.runEditItem.localDateSelection + 'T' + this.state.runEditItem.localTimeSelection);
+            let isoDateString = this.state.runEditItem.localDate + 'T' + this.state.runEditItem.localTime;
+            let selectedDateTime = DateTime.fromISO(isoDateString);
             runEditItem['dateTime'] = selectedDateTime.toISO();
+
+            this.setState({runEditItem: runEditItem});
+        } else if(name === 'durationFormatted'){
+            let {runEditItem} = this.state;
+            runEditItem[name] = value;
+
+            let durationArray = this.state.runEditItem.durationFormatted.split(':');
+            runEditItem['duration'] = ((+durationArray[0]) * 60 * 60 + (+durationArray[1])
+                * 60 + (+durationArray[2])) * 1000;
 
             this.setState({runEditItem: runEditItem});
         } else {
@@ -84,10 +91,10 @@ class RunEdit extends Component {
                         <Label for="date">Date:</Label>
                         <Input
                             type="date"
-                            name="localDateSelection"
-                            id="localDateSelection"
+                            name="localDate"
+                            id="localDate"
                             placeholder=""
-                            value={runEditItem.localDateSelection || ''}
+                            value={runEditItem.localDate || ''}
                             onChange={this.handleChange}
                         />
                     </FormGroup>
@@ -95,48 +102,21 @@ class RunEdit extends Component {
                         <Label for="time">Time:</Label>
                         <Input
                             type="time"
-                            name="localTimeSelection"
-                            id="localTimeSelection"
+                            name="localTime"
+                            id="localTime"
                             placeholder=""
-                            value={runEditItem.localTimeSelection || ''}
+                            value={runEditItem.localTime || ''}
                             onChange={this.handleChange}
                         />
                     </FormGroup>
                     <FormGroup>
                         <Label for="time">Duration:</Label>
-                        <Row form>
-                            <Col md={1}>
-                                <FormGroup>
-                                    <Input type="number"
-                                           name="durationHours"
-                                           id="durationHours"
-                                           placeholder="HH"
-                                           value={runEditItem.durationHours || ''}
-                                           onChange={this.handleChange} />
-                                </FormGroup>
-                            </Col>
-                            <Col md={1}>
-                                <FormGroup>
-                                    <Input type="number"
-                                           name="durationMinutes"
-                                           id="durationMinutes"
-                                           placeholder="MM"
-                                           value={runEditItem.durationMinutes || ''}
-                                           onChange={this.handleChange} />
-                                </FormGroup>
-                            </Col>
-                            <Col md={1}>
-                                <FormGroup>
-                                    <Input type="number"
-                                           name="durationSeconds"
-                                           id="durationSeconds"
-                                           placeholder="SS"
-                                           value={runEditItem.durationSeconds || ''}
-                                           onChange={this.handleChange} />
-                                </FormGroup>
-                            </Col>
-                        </Row>
-
+                        <Input type="string"
+                               name="durationFormatted"
+                               id="durationFormatted"
+                               placeholder=""
+                               value={runEditItem.durationFormatted || ''}
+                               onChange={this.handleChange} />
                     </FormGroup>
                     <FormGroup>
                         <Button color="primary" type="submit">Save</Button>{' '}
