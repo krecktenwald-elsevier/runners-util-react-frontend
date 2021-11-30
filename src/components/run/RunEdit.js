@@ -11,7 +11,8 @@ class RunEdit extends Component {
         localDate: DateTime.now().toFormat('yyyy-MM-dd'),
         localTime: DateTime.now().toFormat('HH:mm'),
         duration: 0,
-        durationFormatted: '00:00:00'
+        durationFormatted: '00:00:00',
+        distance: 0
     };
 
     constructor(props) {
@@ -116,6 +117,15 @@ class RunEdit extends Component {
                                id="durationFormatted"
                                placeholder=""
                                value={runEditItem.durationFormatted || ''}
+                               onChange={this.handleChange} />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="time">Distance:</Label>
+                        <Input type="number"
+                               name="distance"
+                               id="distance"
+                               placeholder=""
+                               value={runEditItem.distance || ''}
                                onChange={this.handleChange} />
                     </FormGroup>
                     <FormGroup>

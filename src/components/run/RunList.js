@@ -42,6 +42,7 @@ class RunList extends Component {
                 <td>{DateTime.fromISO(run.dateTime).toFormat('MM/dd/yyyy')}</td>
                 <td>{DateTime.fromISO(run.dateTime).toFormat('hh:mm a')}</td>
                 <td>{Duration.fromObject({ milliseconds: run.duration }).toFormat('hh:mm:ss')}</td>
+                <td>{run.distance}</td>
                 <td>
                     <ButtonGroup>
                         <Button size="sm" color="primary" tag={Link} to={"/runs/" + run.id}>Edit</Button>
@@ -62,9 +63,10 @@ class RunList extends Component {
                     <Table className="mt-4">
                         <thead>
                         <tr>
-                            <th width="50%">Date</th>
-                            <th width="50%">Time</th>
-                            <th width="50%">Duration</th>
+                            <th width="25%">Date</th>
+                            <th width="25%">Time</th>
+                            <th width="25%">Duration</th>
+                            <th width="25%">Distance (Miles)</th>
                         </tr>
                         </thead>
                         <tbody>
